@@ -4,6 +4,7 @@ import { use, useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useStore } from "@/context/StoreContext";
+import ProductCard from "@/components/products/ProductCard";
 
 type ProductPageProps = {
   params: Promise<{ id: string }>;
@@ -66,7 +67,14 @@ function ProductDetails({
   const [added, setAdded] = useState(false);
 
   const { addToCart } = useCart();
-
+  const { products } = useStore();
+  const relatedProducts = products
+    .filter(
+      (item) =>
+        item.category === product.category &&
+        item.id !== product.id
+    )
+    .slice(0, 4);
   function handleAddToBag() {
     addToCart({
       productId: product.id,
@@ -158,12 +166,40 @@ function ProductDetails({
               {product.stock === 0
                 ? "Out of Stock"
                 : added
-                ? "Added to Bag ✓"
-                : "Add to Bag"}
+                  ? "Added to Bag ✓"
+                  : "Add to Bag"}
             </button>
           </div>
         </div>
-      </section>
+            </section>
+
+      {relatedProducts.length > 0 && (
+        <section className="section related-products-section">
+          <div className="container">
+            <div className="section-header">
+              <div>
+                <span className="section-label">
+                  You May Also Like
+                </span>
+
+                <h2 className="section-title">
+                  More from this collection.
+                </h2>
+              </div>
+            </div>
+
+            <div className="product-grid">
+              {relatedProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
     </main>
   );
 }

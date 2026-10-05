@@ -4,19 +4,20 @@ import type { CartItem as CartItemType } from "@/types/cart";
 import { useCart } from "@/context/CartContext";
 import { products } from "@/data/products";
 
+
 type CartItemProps = {
     item: CartItemType;
 };
 
 export default function CartItem({ item }: CartItemProps) {
     const { updateQuantity, removeFromCart } = useCart();
-   
 
-  const product = products.find(
-    (product) => product.id === item.productId
-  );
 
-  const maxStock = product?.stock || 1;
+    const product = products.find(
+        (product) => product.id === item.productId
+    );
+
+    const maxStock = product?.stock || 1;
     return (
         <article className="cart-item">
             <img src={item.image} alt={item.name} />

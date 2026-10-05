@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/types/product";
 import { useWishlist } from "@/context/WishlistContext";
 
@@ -17,7 +18,12 @@ export default function ProductCard({ product }: ProductCardProps) {
     <article className="product-card">
       <div className="product-image">
         <Link href={`/product/${product.id}`}>
-          <img src={product.image} alt={product.name} />
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
         </Link>
 
         {product.badge && (
@@ -25,9 +31,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
 
         <button
-          className={`wishlist-button ${
-            wishlisted ? "wishlisted" : ""
-          }`}
+          className={`wishlist-button ${wishlisted ? "wishlisted" : ""
+            }`}
           onClick={() => toggleWishlist(product.id)}
           aria-label={
             wishlisted

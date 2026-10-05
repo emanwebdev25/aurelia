@@ -89,7 +89,7 @@ export default function AccountPage() {
             </Link>
 
             <Link
-              href="/account/wishlist"
+              href="/wishlist"
               className="account-sidebar-link"
             >
               Wishlist
