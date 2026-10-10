@@ -39,7 +39,7 @@ export default function Footer() {
             <h4>Aurelia</h4>
 
             <Link href="/#about">Our Story</Link>
-            <Link href="/#contact">Contact</Link>
+            
           </div>
         </div>
 

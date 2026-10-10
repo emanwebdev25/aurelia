@@ -4745,3 +4745,37 @@ body {
   max-width: 100%;
   overflow-x: hidden;
 }
+
+.tracking-search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+  margin: 28px auto 20px;
+}
+
+.tracking-search-form input {
+  width: 100%;
+  padding: 15px 16px;
+  border: 1px solid #DED4CD;
+  border-radius: 4px;
+  background: #FFFFFF;
+  color: #241C1A;
+  font: inherit;
+  outline: none;
+}
+
+.tracking-search-form input:focus {
+  border-color: #B98F8B;
+}
+
+.tracking-search-form button {
+  width: 100%;
+}
+
+.tracking-empty > .btn-secondary {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 8px;
+}

@@ -11,6 +11,8 @@ function TrackingContent() {
   const orderId = searchParams.get("order");
 
   const [order, setOrder] = useState<Order | null>(null);
+  const [enteredOrderId, setEnteredOrderId] = useState("");
+  const [searched, setSearched] = useState(false);
 
   useEffect(() => {
     if (!orderId) return;
@@ -26,33 +28,75 @@ function TrackingContent() {
     setOrder(foundOrder || null);
   }, [orderId]);
 
-  if (!orderId || !order) {
-    return (
-      <main className="tracking-page">
-        <section className="section">
-          <div className="container tracking-empty">
-            <span className="section-label">
-              Order Tracking
-            </span>
+  function handleTrackOrder(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-            <h1>Order not found.</h1>
+    const savedOrders: Order[] = JSON.parse(
+      localStorage.getItem("aurelia-orders") || "[]"
+    );
 
-            <p>
-              We couldn’t find an order with that number.
-            </p>
+    const foundOrder = savedOrders.find(
+      (item) =>
+        item.id.toLowerCase() ===
+        enteredOrderId.trim().toLowerCase()
+    );
 
-            <Link
-              href="/shop"
+    setOrder(foundOrder || null);
+    setSearched(true);
+  }
+  
+if (!order) {
+  return (
+    <main className="tracking-page">
+      <section className="section">
+        <div className="container tracking-empty">
+          <span className="section-label">
+            Order Tracking
+          </span>
+
+          <h1>
+            {searched || orderId
+              ? "Order not found."
+              : "Track your order."}
+          </h1>
+
+          <p>
+            {searched || orderId
+              ? "We couldn’t find an order with that number. Please check it and try again."
+              : "Enter your order number below to check its status."}
+          </p>
+
+          <form
+            onSubmit={handleTrackOrder}
+            className="tracking-search-form"
+          >
+            <input
+              type="text"
+              value={enteredOrderId}
+              onChange={(e) =>
+                setEnteredOrderId(e.target.value)
+              }
+              placeholder="Enter your order number"
+              aria-label="Order number"
+              required
+            />
+
+            <button
+              type="submit"
               className="btn btn-primary"
             >
-              Continue Shopping
-            </Link>
-          </div>
-        </section>
-      </main>
-    );
-  }
+              Track Order
+            </button>
+          </form>
 
+          <Link href="/shop" className="btn btn-secondary">
+            Continue Shopping
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}
   const steps = [
     "Processing",
     "Shipped",
@@ -116,9 +160,8 @@ function TrackingContent() {
                 return (
                   <div
                     key={step}
-                    className={`tracking-step ${
-                      completed ? "completed" : ""
-                    }`}
+                    className={`tracking-step ${completed ? "completed" : ""
+                      }`}
                   >
                     <div className="tracking-step-number">
                       {completed ? "✓" : index + 1}
